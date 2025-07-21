@@ -63,7 +63,7 @@ resource "aws_route_table_association" "public" {
   route_table_id = aws_route_table.public.id
 }
 resource "aws_route_table" "private" {
-  count  = var.priv_sub_count
+  #count  = var.priv_sub_count
   vpc_id = aws_vpc.main.id
   tags = {
     Name = "Private-route"
