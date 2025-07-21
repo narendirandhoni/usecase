@@ -33,7 +33,7 @@ resource "aws_subnet" "private" {
 }
 
 resource "aws_eip" "eip" {
-  count = var.nat_count
+  #count = var.nat_count
   tags = {
     Name = "us_elasticip"
   }
@@ -42,7 +42,7 @@ resource "aws_eip" "eip" {
 resource "aws_nat_gateway" "nat" {
   #count         = var.nat_count
   allocation_id = aws_eip.eip.id
-  subnet_id     = aws_subnet.public.id
+  subnet_id     = aws_subnet.public[count.index].id
 }
 
 resource "aws_route_table" "public" {
@@ -78,5 +78,5 @@ resource "aws_route" "private" {
 resource "aws_route_table_association" "private" {
   count          = var.priv_sub_count
   subnet_id      = aws_subnet.private[count.index].id
-  route_table_id = aws_route_table.private.id
+  route_table_id = aws_route_table.private[count.index].id
 }
