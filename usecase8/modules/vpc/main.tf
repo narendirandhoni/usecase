@@ -40,9 +40,9 @@ resource "aws_eip" "eip" {
 }
 
 resource "aws_nat_gateway" "nat" {
-  #count         = var.nat_count
+  #count         = var.pub_sub_count
   allocation_id = aws_eip.eip.id
-  subnet_id     = aws_subnet.public[count.index].id
+  subnet_id     = aws_subnet.public[0].id
 }
 
 resource "aws_route_table" "public" {
