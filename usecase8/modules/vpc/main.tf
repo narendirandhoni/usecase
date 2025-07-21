@@ -63,20 +63,20 @@ resource "aws_route_table_association" "public" {
   route_table_id = aws_route_table.public.id
 }
 resource "aws_route_table" "private" {
-  #count  = var.priv_sub_count
+  count  = var.priv_sub_count
   vpc_id = aws_vpc.main.id
   tags = {
     Name = "Private-route"
   }
 }
 resource "aws_route" "private" {
-  #count                  = var.nat_count
-  route_table_id         = aws_route_table.private.id
+  count                  = var.nat_count
+  route_table_id         = aws_route_table.private[count.index].id
   destination_cidr_block = "0.0.0.0/0"
-  gateway_id             = aws_nat_gateway.nat.id
+  gateway_id             = aws_nat_gateway.nat[count.index].id
 }
 resource "aws_route_table_association" "private" {
   count          = var.priv_sub_count
   subnet_id      = aws_subnet.private[count.index].id
-  route_table_id = aws_route_table.private.id
+  route_table_id = aws_route_table.private[count.index].id
 }
